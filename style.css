@@ -60,21 +60,6 @@ nav a {
     font-weight: 500;
 }
 
-.nav-button-primary, .nav-button-secondary {
-    padding: 0.5rem 1rem;
-    border-radius: var(--border-radius);
-    text-decoration: none;
-    color: var(--light-text-color);
-}
-
-.nav-button-primary {
-    background-color: var(--primary-color);
-}
-
-.nav-button-secondary {
-    background-color: var(--secondary-color);
-}
-
 /* Hero Section */
 .hero {
     background-color: var(--primary-color);
@@ -147,7 +132,7 @@ h2 {
     padding-bottom: 4rem;
 }
 
-.form-container, .contact-form {
+.contact-form {
     max-width: 500px;
     margin: 2rem auto;
     padding: 2rem;
@@ -172,11 +157,6 @@ h2 {
     border: 1px solid #ccc;
     border-radius: var(--border-radius);
     box-sizing: border-box;
-}
-
-.form-switch {
-    margin-top: 1rem;
-    text-align: center;
 }
 
 .sub-heading {
