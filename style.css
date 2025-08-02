@@ -1,3 +1,4 @@
+html { zoom: 0.9; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: 'Segoe UI', sans-serif; background-color: #0f172a; color: #cbd5e1; min-height: 100vh; }
 
@@ -51,9 +52,66 @@ body { font-family: 'Segoe UI', sans-serif; background-color: #0f172a; color: #c
 .mitigation-list li { color: #94a3b8; margin-bottom: 10px; padding-left: 10px; }
 .inventory-toggle-group { display: flex; align-items: center; gap: 12px; margin-bottom: 0; }
 .inventory-toggle-group label { margin-bottom: 0; cursor: pointer; font-weight: 500; }
-.inventory-toggle-group label::before { content: '▶'; display: inline-block; margin-right: 10px; font-size: 0.8em; transition: transform 0.2s ease-in-out; }
-#use-inventory-toggle:checked + label::before { transform: rotate(90deg); }
-input[type="checkbox"] { width: 18px; height: 18px; accent-color: #4f46e5; }
+/* Switch styles */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #4f46e5;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #4f46e5;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
 .range-container { display: flex; align-items: center; gap: 15px; }
 .asset-table input[type="range"] { flex-grow: 1; padding: 0; }
 .range-value { font-weight: 600; font-size: 1.1em; color: #f8fafc; width: 20px; text-align: center; }
@@ -86,7 +144,7 @@ input[type="checkbox"] { width: 18px; height: 18px; accent-color: #4f46e5; }
 .about-card { text-align: left; }
 .about-card p { margin-bottom: 15px; line-height: 1.7; }
 .about-card h4 { font-size: 1.5em; color: #f1f5f9; margin-bottom: 15px; }
-.about-header { text-align: center; padding-bottom: 15px; margin-bottom: 15px; border-bottom: 1px solid #334155;}
+.about-header { text-align: center; padding-bottom: 15px; margin-bottom: 15px; border-bottom: 1px solid #334155; }
 .about-header h2 { font-size: 2em; color: #fff; margin-bottom: 10px; }
 .contact-info { font-size: 1.0em; color: #94a3b8; margin-bottom: 15px; }
 .contact-info a { color: #818cf8; text-decoration: none; transition: color 0.3s; }
