@@ -27,6 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('add-asset-btn').addEventListener('click', addAsset);
     const inventoryToggle = document.getElementById('use-inventory-toggle');
     const inventoryCard = document.getElementById('asset-inventory-card');
+    inventoryToggle.checked = false;
+    inventoryCard.style.display = 'none';
     inventoryToggle.addEventListener('change', (e) => {
         inventoryCard.style.display = e.target.checked ? 'block' : 'none';
     });
@@ -225,26 +227,25 @@ Your response MUST be a single valid JSON object with a single key "risk_assessm
 }
 
 async function runRiskAnalysis() {
-    const inventoryToggle = document.getElementById('use-inventory-toggle');
-    if (!inventoryToggle.checked) {
-        inventoryToggle.checked = true;
-        inventoryToggle.dispatchEvent(new Event('change'));
-    }
-    if (assetInventory.length === 0) {
-        alert("Please add at least one asset to your inventory before running a risk assessment.");
+    const useInventory = document.getElementById('use-inventory-toggle').checked;
+    if (useInventory && assetInventory.length === 0) {
+        alert("Please add assets to the inventory first, or uncheck the 'Use Custom Asset Inventory' box to run an analysis without it.");
         document.getElementById('asset-inventory-card').scrollIntoView({ behavior: 'smooth' });
         return;
     }
+
     const budget = document.getElementById('detailed-budget').value;
     const industry = document.getElementById('detailed-industry').value;
     const companySize = document.getElementById('detailed-companySize').value;
     const primaryGoal = document.getElementById('detailed-primaryGoal').value;
 
-    let inventoryString = "| Name | Type | Importance (0-5) |\n|---|---|---|\n";
-    assetInventory.forEach(a => { inventoryString += `| ${a.name} | ${a.type} | ${a.importance} |\n`; });
+    let inventoryString = "No custom asset inventory provided.";
+    if (useInventory) {
+        inventoryString = "| Name | Type | Importance (0-5) |\n|---|---|---|\n";
+        assetInventory.forEach(a => { inventoryString += `| ${a.name} | ${a.type} | ${a.importance} |\n`; });
+    }
 
-    let prompt = `Act as a predictive risk analyst. Based on this asset inventory:\n${inventoryString}\n\nYour response MUST be a single valid JSON object with a single key "risk_assessment". Its value must be an array of objects, each with these keys: "domain" (one of 5 specific values), "risk_score" (0-100), "mitigation_percent" (0-100), "future_issues" (string), and "mitigation_steps" (array of strings).`;
-    prompt = getPredictiveAnalysisPrompt(industry,companySize,budget,primaryGoal,inventoryString);
+    let prompt = getPredictiveAnalysisPrompt(industry, companySize, budget, primaryGoal, inventoryString);
     const resultsContainer = document.getElementById('ai-results-container');
     currentAbortController = new AbortController();
     try {
@@ -253,7 +254,7 @@ async function runRiskAnalysis() {
         const result = cleanAndParseJson(aiResponse);
         const assessments = result.risk_assessment || result;
         
-        console.log("Received AI assessment data:", assessments); // ✨ ADDED FOR DEBUGGING
+        console.log("Received AI assessment data:", assessments);
 
         if (assessments && Array.isArray(assessments) && assessments.length > 0) {
             updateRiskDashboard(assessments);
